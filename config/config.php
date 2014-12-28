@@ -10,11 +10,12 @@
 
 // Используемый шаблонный хук
 // Для старых шаблонов нужно задать 'body_end'
-//$config['template_hook'] = 'layout_body_end';
-$config['template_hook'] = 'body_end';
+$config['template_hook'] = 'layout_body_end';
+//$config['template_hook'] = 'body_end';
 
 // Значения по умолчанию для всех элементов
 $config['default'] = array(
+    //'basedir' => Config::Get('path.static.dir') . Config::Get('path.uploads.images'),
     'size' => 'x300',
     'place' => array(
         'position' => 3, // 1 - верхний левый; 2 - верхний правый; 3 - нижний правый; 4 - нижний левый
@@ -40,10 +41,11 @@ $config['images']['img1'] = array(
 );
 */
 $config['images']['img2'] = array(
-    'image' => 'twig-16.png',
+    'image' => 'twig-13.png',
+    'size' => '200x200',
     'place' => array(
         'position' => 2, // 1 - верхний левый; 2 - верхний правый; 3 - нижний правый; 4 - нижний левый
-        'offset' => array(0, 20), // смещение - x, y
+        'offset' => array(0, 50), // смещение - x, y
     ),
 );
 

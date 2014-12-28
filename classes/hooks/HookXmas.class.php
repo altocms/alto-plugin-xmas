@@ -15,13 +15,15 @@ class PluginXmas_HookXmas extends Hook {
 
     public function RegisterHook() {
 
-        $sHook = Config::Get('plugin.xmas.template_hook');
-        $this->_getParams();
-        if ($sHook && $this->aImages) {
-            if (strpos($sHook, 'template_') !== 0) {
-                $sHook = 'template_' . $sHook;
+        if (!F::AjaxRequest()) {
+            $sHook = Config::Get('plugin.xmas.template_hook');
+            $this->_getParams();
+            if ($sHook && $this->aImages) {
+                if (strpos($sHook, 'template_') !== 0) {
+                    $sHook = 'template_' . $sHook;
+                }
+                $this->AddHook($sHook, 'DisplayImages');
             }
-            $this->AddHook($sHook, 'DisplayImages');
         }
     }
 
@@ -103,24 +105,41 @@ class PluginXmas_HookXmas extends Hook {
             if (isset($aImg['size'])) {
                 $sSize = $aImg['size'];
             }
-            $sAssetDir = F::File_GetAssetDir() . 'xmas/';
+
             $sImage = $aImg['image'];
+            $sBaseDir = $aImg['basedir'];
+
+            if ($sBaseDir) {
+                $sAssetDir = $sBaseDir;
+                $sAssetUrl = F::File_Dir2Url($sBaseDir);
+                $sSource = $sBaseDir . $sImage;
+            } else {
+                $sAssetDir = F::File_GetAssetDir() . 'xmas/';
+                $sAssetUrl = F::File_GetAssetUrl() . 'xmas/';
+                $sDir = Plugin::GetTemplateDir(__CLASS__) . 'assets/';
+                $sSource = F::File_Exists($sImage, array($sDir . 'img2/', $sDir . 'img/'));
+            }
             if ($sSize) {
                 $sImgFile = $sAssetDir . $sImage . F::File_ImgModSuffix($sSize, pathinfo($sImage, PATHINFO_EXTENSION));
             } else {
                 $sImgFile = $sAssetDir . $sImage;
             }
 
-            if (!F::File_Exists($sImgFile)) {
-                $sSource = Plugin::GetTemplateDir(__CLASS__) . 'assets/img/' . $sImage;
-                $sTarget = F::File_Copy($sSource, dirname($sImgFile) . '/' . basename($sSource));
+            if (!F::File_Exists($sImgFile) && $sSource) {
+                if (dirname($sImgFile) != dirname($sSource)) {
+                    $sTarget = F::File_Copy($sSource, dirname($sImgFile) . '/' . basename($sSource));
+                } else {
+                    $sTarget = true;
+                }
                 if ($sTarget && $sSize) {
                     $sImgFile = $this->Img_Duplicate($sImgFile);
+                } else {
+                    $sImgFile = null;
                 }
             }
             if ($sImgFile) {
                 $aXmasImg = array(
-                    'src' => F::File_GetAssetUrl() . 'xmas/' . basename($sImgFile),
+                    'src' => $sAssetUrl . basename($sImgFile),
                     'css' => $sClass,
                     'style' => $sStyle,
                 );
