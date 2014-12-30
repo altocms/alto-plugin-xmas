@@ -9,7 +9,7 @@
         <lang name="default">Alto CMS Team</lang>
     </author>
     <homepage>http://altocms.ru</homepage>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <dirname>xmas</dirname>
     <requires>
         <alto>
