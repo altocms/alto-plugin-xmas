@@ -41,7 +41,7 @@ $config['images']['img1'] = array(
 );
 */
 $config['images']['img2'] = array(
-    'image' => 'twig-13.png',
+    'image' => 'twig-01.png',
     'size' => '200x200',
     'place' => array(
         'position' => 2, // 1 - верхний левый; 2 - верхний правый; 3 - нижний правый; 4 - нижний левый
@@ -50,7 +50,7 @@ $config['images']['img2'] = array(
 );
 
 $config['snow'] = array(
-    'display' => false, // закомментируйте эту строку, если нужен "снег"
+    //'display' => false, // раскомментируйте эту строку, если не нужен "снег"
     'options' => array(
         'flakeCount' => 25,        // number
         'flakeColor' => '#ffffff', // string
